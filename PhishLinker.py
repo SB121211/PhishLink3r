@@ -131,8 +131,6 @@ def page_check(response):
     inputs = soap.find_all('input')
     links = soap.find_all('link')
     links2 = soap.find_all('a')
-    body = soap.body
-    text_b = body.getText()
     for i in sensitive_keywords:
         if soap.title and soap.title.string and i.lower() in soap.title.string.lower():
             print(Fore.RED + f"Warning: a suspicious keyword was found in the title of the page! ({i})")
@@ -159,10 +157,6 @@ def page_check(response):
                 print(Fore.RED + f"Warning: a suspicious keyword was found in a link at the target's webpage: ({text})!")
                 warns += 1
 
-    for i in sensitive_keywords:
-        if text_b and i.lower() in text_b.lower():
-            print(Fore.RED + f"Warning: a suspicious keyword was found in target's webpage: ({i})!")
-            warns += 1
     return warns
 
 
