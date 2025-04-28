@@ -136,26 +136,35 @@ def page_check(response):
             print(Fore.RED + f"Warning: a suspicious keyword was found in the title of the page! ({i})")
             warns += 1
 
+    t = False
     for input in inputs:
         title = input.get('title')
         for i in sensitive_keywords:
             if title and i.lower() in title.lower():
                 print(Fore.RED + f"Warning: a supicious keyword was found in an input in target's website! ({i})")
-                warns += 1 
+                t = True
+    if t == True:
+        warns += 1
 
+    t = False
     for link in links:
         text = link.get('href')
         for i in sensitive_keywords:
             if text and i.lower() in text.lower():
                 print(Fore.RED + f"Warning: a suspicious keyword was found in a link at the target's webpage: ({text})!")
-                warns += 1
-    
+                t = True
+    if t == True:
+        warns += 1
+
+    t = False
     for link2 in links2:
         text = link2.get('href')
         for i in sensitive_keywords:
             if text and i.lower() in text.lower():
                 print(Fore.RED + f"Warning: a suspicious keyword was found in a link at the target's webpage: ({text})!")
-                warns += 1
+                t = True
+    if t == True:
+        warns += 1
 
     return warns
 
@@ -226,6 +235,9 @@ except requests.exceptions.ConnectionError:
 
 except requests.exceptions.MissingSchema:
     print(Style.RESET_ALL + Fore.RED + Style.BRIGHT + "The target doesn't exist!")
+
+except requests.exceptions.InvalidURL:
+    print(Style.RESET_ALL + Fore.RED + Style.BRIGHT + "Invalid url!")
 
 except requests.exceptions.InvalidURL:
     print(Style.RESET_ALL + Fore.RED + Style.BRIGHT + "Invalid url!")
