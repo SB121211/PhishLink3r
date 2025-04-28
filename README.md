@@ -21,7 +21,7 @@ it also utilizes sockets to obtain ip and api calls from "ipwho.is" service thro
 
 ## Usage
 `python3 PhishLinker.py`
-1. Enter your target's url (e.g. https://target.com)
+1. Enter your target's url (e.g. https://{target}.com)
 2. Wait for program to evaluate data and output the result
 
 ## Disclaimer
