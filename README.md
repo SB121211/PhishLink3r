@@ -17,7 +17,7 @@ it also utilizes sockets to obtain ip and api calls from "ipwho.is" service thro
 2. Install dependencies:
 `pip install requests colorama bs4 urllib`
 4. Download the script:
-`git clone https://github.com/SB121211/PhishLinker.git`
+`git clone https://github.com/SB121211/PhishLink3r.git`
 
 ## Usage
 `python3 PhishLinker.py`
