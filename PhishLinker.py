@@ -238,6 +238,3 @@ except requests.exceptions.MissingSchema:
 
 except requests.exceptions.InvalidURL:
     print(Style.RESET_ALL + Fore.RED + Style.BRIGHT + "Invalid url!")
-
-except requests.exceptions.InvalidURL:
-    print(Style.RESET_ALL + Fore.RED + Style.BRIGHT + "Invalid url!")
