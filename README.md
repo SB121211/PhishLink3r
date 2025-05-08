@@ -7,10 +7,11 @@ it also utilizes sockets to obtain ip and api calls from "ipwho.is" service thro
 ## Features
 - URL check for strange or suspicious behaviour
 - URL check for possible encoding
-- Page check for suspicious keywords containing
+- Page check for suspicious keywords containing 
 - Output IP and geolocation of the target's server
+- Checking whois details and registrar info
 - Display possible threats and warnings
-- Display results and calculate trustability precentage based on number of found warnings
+- Display results and calculate trustability precentage based on number of warnings
 
 ## Installation
 1. Install python3
