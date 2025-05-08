@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import time
 from colorama import Style,Fore,init
 from urllib.parse import urlparse
+import whois
 
 sensitive_keywords = [
     # Urgency & Action-Oriented Words
@@ -110,7 +111,7 @@ def url_check(url):
     
     for i in sensitive_keywords:
         if i in url:
-            print(Fore.RED + f"Warning: a sensitive word ({i}) has been found in the url!")
+            print(Fore.RED + f"Warning: a sensitive keyword ({i}) has been found in the url!")
             warns += 1
     time.sleep(1)
 
@@ -151,7 +152,7 @@ def page_check(response):
         text = link.get('href')
         for i in sensitive_keywords:
             if text and i.lower() in text.lower():
-                print(Fore.RED + f"Warning: a suspicious keyword was found in a link at the target's webpage: ({text})!")
+                print(Fore.RED + f"Warning: be careful, a suspicious keyword was found in a link at the target's webpage: ({text})!")
                 t = True
     if t == True:
         warns += 1
@@ -161,13 +162,23 @@ def page_check(response):
         text = link2.get('href')
         for i in sensitive_keywords:
             if text and i.lower() in text.lower():
-                print(Fore.RED + f"Warning: a suspicious keyword was found in a link at the target's webpage: ({text})!")
+                print(Fore.RED + f"Warning: be careful, a suspicious keyword was found in a link at the target's webpage: ({text})!")
                 t = True
     if t == True:
         warns += 1
 
     return warns
 
+def whois_detail(url):
+    domain = urlparse(url)
+    domain = domain.hostname
+    x = whois.whois(domain)
+    if "registrar" in x and "creation_date" in x:
+        print("Registrar: " + x.get("registrar"))
+    else:
+        print(Fore.RED + "Warning: The target seems to be new or out of whois details!")
+        return 1
+        
 
 
 def main():
@@ -183,35 +194,37 @@ def main():
     print("-----------------------------------------------------------------------------")
     time.sleep(1)
     ip = obtain_ip(url)
-    print("Target's IP address: " + ip)
+    print("IP address: " + ip)
     location = ip_location(ip)
     continent = location.get('continent','continent not available!')
-    print(f"Target's continent: {continent}")
+    print(f"Continent: {continent}")
     country = location.get('country','country not available!')
-    print(f"Target's country: {country}")
+    print(f"Country: {country}")
     city = location.get('city','city not available!')
-    print(f"Target's city: {city}")
-    region = location.get('region','region not available!')
-    print(f"Target's region: {region}")
-    print("-----------------------------------------------------------------------------")
+    print(f"City: {city}")
     time.sleep(1)
 
-    warns = url_check(url)  + page_check(response)
+    print("-----------------------------------------------------------------------------")
+    y = whois_detail(url)
+    if y == 1:
+        warns = url_check(url)  + page_check(response) + 1
+    elif y != 1:
+        warns = url_check(url)  + page_check(response)
     trust = 90 - (warns*10)
     print("-----------------------------------------------------------------------------")
-
+    time.sleep(0.5)
     print(Fore.BLUE + "Getting results...")
     time.sleep(1)
     if warns == 0:
         print(Fore.GREEN + f"The webpage seems to be safe. (number of alerts found: {warns})")
         print(f"Trustability: {trust}% (never fully trust!)")
-    elif warns == 1:
+    elif warns <= 2:
         print(Fore.GREEN + f"The webpage seems to be trustable. (number of alerts found: {warns})")
         print(f"Trustability: {trust}% (never fully trust!)")
-    elif warns == 2:
+    elif warns == 3:
         print(Fore.YELLOW + f"The webpage seems to be suspicious. (number of alerts found: {warns})")
         print(f"Trustability: {trust}% (never fully trust!)")
-    elif warns >= 3 and warns < 5:
+    elif warns == 4:
         print(Fore.RED + f"The webpage seems to be malicious. (number of alerts found: {warns})")
         print(f"Trustability: {trust}%")
     elif warns >= 5 and warns < 7:
@@ -235,6 +248,9 @@ except requests.exceptions.ConnectionError:
 
 except requests.exceptions.MissingSchema:
     print(Style.RESET_ALL + Fore.RED + Style.BRIGHT + "The target doesn't exist!")
+
+except requests.exceptions.InvalidURL:
+    print(Style.RESET_ALL + Fore.RED + Style.BRIGHT + "Invalid url!")
 
 except requests.exceptions.InvalidURL:
     print(Style.RESET_ALL + Fore.RED + Style.BRIGHT + "Invalid url!")
