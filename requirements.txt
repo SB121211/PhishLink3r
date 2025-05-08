@@ -1,5 +1,5 @@
 requests
 colorama
-bs4
-urllib
-python-whoi
+beautifulsoap4
+urllib3
+python-whois
