@@ -15,7 +15,7 @@ it also utilizes sockets to obtain ip and api calls from "ipwho.is" service thro
 ## Installation
 1. Install python3
 2. Install dependencies:
-`pip install requests colorama bs4 urllib`
+`pip install requests colorama bs4 urllib python-whois`
 4. Download the script:
 `git clone https://github.com/SB121211/PhishLink3r.git`
 
